@@ -2,9 +2,14 @@ const goalsContainer = document.querySelector('#goals-container')
 
 const complimentBtn = document.getElementById("complimentButton")
 const fortuneBtn = document.querySelector("#fortuneButton")
-const createBtn = document.querySelector('#createButton')
-const form = document.querySelector('form')
-const baseURL = "http://localhost:4000/api/compliment"
+
+const createForm = document.querySelector('form')
+const goalInput = document.querySelector('#goalInput')
+const timeInput = document.querySelector('#timeInput')
+
+const deleteForm = document.querySelector('#deleteForm')
+const deleteInput = document.querySelector('#deleteInput')
+
 
 const getCompliment = () => {
     axios.get("http://localhost:4000/api/compliment/")
@@ -14,7 +19,7 @@ const getCompliment = () => {
     });
 };
 const getFortune = () => {
-    axios.get("http://localhost:4000/api/compliment/fortune")
+    axios.get("http://localhost:4000/api/fortune")
         .then(res => {
             const data = res.data
             alert(data)
@@ -23,40 +28,46 @@ const getFortune = () => {
             console.log(error)
         })
 }
-const createGoal = body => {
-    console.log('create goal?')
-    axios.post(baseURL, body).then((res) => {createGoalCard(goals)})
-        .catch((error) => {
-            console.log(error)
-        })
-}
-function submitHandler(e) {
+
+function createGoal(e) {
     e.preventDefault()
 
-    let goal = document.querySelector('#goal')
-
-    let bodyObj = {
-        goal: goal.value
+    const bodyObj = {
+        goal: goalInput.value,
+        time: timeInput.value
     }
 
-    createGoal(bodyObj)
+    // goalInput.value = ''
+    // timeInput.value = ''
 
-    goal.value = ''
+    axios.post("http://localhost:4000/api/create/", bodyObj)
+        .then((response) => {
+            let db = response.data
+            console.log(db)
+        })
+        .catch((error) => {
+        console.log(error)
+        })
+}
+function deleteGoal(e) {
+    e.preventDefault()
+
+    let deleteId = deleteInput.value
+
+    axios.delete('http://localhost:4000/api/delete/' + deleteId)
+    .then((res) => {
+        let db = res.data
+        console.log(db)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
+    deleteInput.value = ''
 }
 
 
 complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', getFortune)
-form.addEventListener('submit', submitHandler)
-// createBtn.addEventListener('click', createGoal)
-
-function createGoalCard(goals) {
-    goalsContainer.innerHTML=``
-    const goalCard = document.createElement('div')
-    goalCard.classList.add('new-goal')
-
-    goalCard.innerHTML = `<p class="goal">${goals.goal}</p>`
-
-    goalsContainer.appendChild(goalCard)
-
-}
+createForm.addEventListener('submit', createGoal)
+deleteForm.addEventListener('submit', deleteGoal)

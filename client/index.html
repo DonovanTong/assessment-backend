@@ -9,18 +9,19 @@
     <button id="fortuneButton">Get a Fortune</button>
     <p></p>
     <form>
-      <!-- <input 
-          type='text'
-          id="name"
-          placeholder="What is your name?"/>
-          <button id="nameBtn">Add Name</button><br> -->
-          <p>What is a goal you want to acheive?</p>
-      <input
-        type="text"
-        id="goal"
-        placeholder="Type Goal Here">
-        <button id="createButton">Create Goal</button>
+      <p>What is a goal you want to acheive?</p>
+      <label for="goalInput">Goal</label>
+      <input id="goalInput" placeholder="goal">
+      <label for="timeInput">Time in Months</label>
+      <input id="timeInput" placeholder="time">
+      <input type="submit" value="Create Goal"/>
     </form>
+    <form id="deleteForm">
+      <label for="deleteInput">Enter a goal ID to delete:</label>
+      <input id="deleteInput" placeholder="deleteInput">
+      <input type="submit" value="Delete Goal">
+    </form>
+
     <p></p>
     <section id="goals-container"></section>
 

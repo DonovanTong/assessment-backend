@@ -1,5 +1,4 @@
-const goals = []
-globalId = 10
+const dataBase = []
 module.exports = {
 
     getCompliment: (req, res) => {
@@ -20,22 +19,37 @@ module.exports = {
         res.status(200).send(randomFortune)
     },
     createGoal: (req, res) => {
-        const {goal, term} = req.body
-        // let greatestId = -1
-        // for(let i=0;i<goals.length; i++) {
-        //     if (goals[i].id > greatestId) {
-        //         greatestId = goals[i].id
-        //     }
-        // }
-        // let nextId = greatestId + 1
-        let newGoal = {
-            id: globalId,
-            goal,
-            term
+        const { goal, time } = req.body
+        
+        let nextId = 0
+        for (let i = 0; i < dataBase.length; i++) {
+            if (dataBase[i].id > nextId) {
+                nextId = dataBase[i].id
+            }
         }
-        goals.push(newGoal)
-        res.status(200).send(goals)
+        nextId++
 
+        let newGoal = {
+            goal: goal,
+            time: time,
+            id: nextId,
+        }
+
+        dataBase.push(newGoal)
+        console.log(dataBase)
+        res.status(200).send(dataBase)
+
+    },
+    deleteGoal: (req, res) => {
+        let id = +req.params.id
+
+        for (let i = 0; i < dataBase.length; i++) {
+            if (id === dataBase[i].id) {
+                dataBase.splice(i, 1)
+            }
+        }
+        console.log(dataBase)
+        res.status(200).send(dataBase)
     }
 
 }
