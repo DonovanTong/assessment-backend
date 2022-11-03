@@ -10,6 +10,9 @@ const timeInput = document.querySelector('#timeInput')
 const deleteForm = document.querySelector('#deleteForm')
 const deleteInput = document.querySelector('#deleteInput')
 
+const updateForm = document.querySelector('#updateForm')
+const updateInput = document.querySelector('#updateInput')
+
 
 const getCompliment = () => {
     axios.get("http://localhost:4000/api/compliment/")
@@ -34,7 +37,8 @@ function createGoal(e) {
 
     const bodyObj = {
         goal: goalInput.value,
-        time: timeInput.value
+        time: timeInput.value,
+        status: false
     }
 
     // goalInput.value = ''
@@ -52,7 +56,7 @@ function createGoal(e) {
 function deleteGoal(e) {
     e.preventDefault()
 
-    let deleteId = deleteInput.value
+    const deleteId = deleteInput.value
 
     axios.delete('http://localhost:4000/api/delete/' + deleteId)
     .then((res) => {
@@ -65,9 +69,23 @@ function deleteGoal(e) {
 
     deleteInput.value = ''
 }
+function updateGoal(e) {
+    e.preventDefault()
 
+    const updateId = updateInput.value
+
+    axios.put('http://localhost:4000/api/update/' + updateId)
+    .then((res) => {
+        let db = res.data
+        console.log(db)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+}
 
 complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', getFortune)
 createForm.addEventListener('submit', createGoal)
 deleteForm.addEventListener('submit', deleteGoal)
+updateForm.addEventListener('submit', updateGoal)

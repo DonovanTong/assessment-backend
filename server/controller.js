@@ -32,6 +32,7 @@ module.exports = {
         let newGoal = {
             goal: goal,
             time: time,
+            status: false,
             id: nextId,
         }
 
@@ -45,7 +46,19 @@ module.exports = {
 
         for (let i = 0; i < dataBase.length; i++) {
             if (id === dataBase[i].id) {
-                dataBase.splice(i, 1)
+                return dataBase.splice(i, 1)
+            }
+        }
+        console.log(dataBase)
+        res.status(200).send(dataBase)
+    },
+    updateGoal: (req, res) => {
+        let id = +req.params.id
+
+        for (let i = 0; i < dataBase.length; i++) {
+            if (id === dataBase[i].id) {
+                dataBase[i].status = true
+                return dataBase[i]
             }
         }
         console.log(dataBase)
